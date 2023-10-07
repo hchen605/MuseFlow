@@ -16,10 +16,10 @@ import os
 import sys
 
 import data_processing.converter as converter
-import data.metrics as metrics
+#import data.metrics as metrics
 import data.midi_io as midi_io
 import data.image_io as image_io
-import model.flow_layers as flow
+import model.flow_layer as flow
 
 class Model(object):
 

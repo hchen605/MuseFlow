@@ -132,11 +132,8 @@ dmypy.json
 flask.mid
 
 *.pb
-model/single/bass/0/decoder/0/saved_model.pb
-model/single/bass*
-model/**/saved_model.pb
-model/single/**/**/**
-model/single/*/*/*/*
-model/single/**/**/**/**/variables*
-
+model/single/bass
+model/single/drum
+model/single/string
+model/single/guitar
 model/single_bk

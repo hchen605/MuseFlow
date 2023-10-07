@@ -8,7 +8,7 @@ session = tf.Session(config=config)
 
 from load_model import Model
 import numpy as np
-import model.flow_layers as flow
+import model.flow_layer as flow
 from data.config import CONFIG
 num_timestep = 768
 num_pitch = 60
@@ -17,7 +17,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string(
-    'file_path', './music_data/song_of_joy.mid',
+    'file_path', './music_data/samp.mid',
     'Main melody file path ')
 
 flags.DEFINE_string(
@@ -54,8 +54,11 @@ def combine(paino,sw=True,filt=False):
         guitar_output = guitar.medfilt(guitar_output, 11)
         bass_output = bass.medfilt(bass_output, 17)
     compiled_list=[drums_output[...,-1:], guitar_output, bass_output[...,-1:], strings_output[...,-1:]]
+    #print('compiled_list: ', np.array(compiled_list).shape)
     result = np.concatenate(compiled_list, axis=-1)
+    print('result: ', np.array(result).shape)
     result = result.reshape(-1, 2, num_timestep // 2, num_pitch, 5)
+    #result = result.reshape(-1, 3, 384, num_pitch, 5)
 
     return result
 def main(unused_argv):

@@ -15,7 +15,7 @@ import numpy as np
 import sys
 sys.path.append("..")
 import data_processing.converter as converter
-import data.metrics as metrics
+#import data.metrics as metrics
 import data.midi_io as midi_io
 import data.image_io as image_io
 #verify GPU
