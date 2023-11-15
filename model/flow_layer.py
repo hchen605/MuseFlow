@@ -185,10 +185,17 @@ def SlidingWindow(file, resol, num_timestep, num_pitch, num_consecutive_bar=8, d
     """Test data sliding window input
     """
     multitrack = pypianoroll.parse(file)
+    print(multitrack)
     track = where_paino(multitrack)
+    print(track)
     multitrack = converter.first_note_code(multitrack)  # 标记起始音
+    #print(multitrack.tempo)
+    #print(len(multitrack.tempo))
+    #print(len(multitrack.downbeat))
+    #print(multitrack.beat)
     downbeat = multitrack.downbeat
-    num_bar = len(downbeat) // resol
+    #num_bar = len(downbeat) // resol
+    num_bar = len(multitrack.tempo) // resol
     hop_iter = 0
     song_ok_segments = []
 

@@ -17,7 +17,7 @@ flags = tf.app.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string(
-    'file_path', './music_data/samp.mid',
+    'file_path', './music_data/lovenet_8.midi',
     'Main melody file path ')
 
 flags.DEFINE_string(
@@ -59,6 +59,7 @@ def combine(paino,sw=True,filt=False):
     print('result: ', np.array(result).shape)
     result = result.reshape(-1, 2, num_timestep // 2, num_pitch, 5)
     #result = result.reshape(-1, 3, 384, num_pitch, 5)
+    print('result: ', np.array(result).shape)
 
     return result
 def main(unused_argv):
