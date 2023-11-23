@@ -201,7 +201,7 @@ class Scale(Layer):
                                       trainable=True)
 
     def call(self, inputs):
-        self.add_loss(-K.sum(self.kernel))  
+        self.add_loss(-K.sum(self.kernel))  # maximize det(J(G))? why not multiply?
         return K.exp(self.kernel) * inputs
 
     def inverse(self):
@@ -249,11 +249,11 @@ x_in = Input(shape=(num_timestep, num_pitch, num_track,))
 x = x_in
 
 
-x1, x2 = split(x)
-x2 = scale(x2)
+x1, x2 = split(x) #split piano and the other
+x2 = scale(x2) # mul by a trainable kernal
 
-mx1 = basic_model_11(x1)
-x1, x2 = couple([x1, x2, mx1])
+mx1 = basic_model_11(x1) #piano into GRU
+x1, x2 = couple([x1, x2, mx1]) #merge z:x2 and mx1 (+) 
 
 mx2 = basic_model_21(x1)
 x1, x2 = couple([x1, x2, mx2])
@@ -270,7 +270,7 @@ encoder = Model(inputs=x_in, outputs=x2)
 encoder.summary()
 
 
-def my_loss(y_true, y_pred):
+def my_loss(y_true, y_pred): # minimize z -> gaussian zero mean?
     y_r = 0.5 * K.sum(y_pred**2, 1)
     return y_r
 
