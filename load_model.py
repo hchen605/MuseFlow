@@ -43,7 +43,7 @@ class Model(object):
         self.z_op = self.sess.graph.get_tensor_by_name(x_tensor_name)
         self.generate_op = self.sess.graph.get_tensor_by_name(y_tensor_name)
 
-    def generate(self,x_pre , n,sw=True,threshold=0.5, std=1,get_z=False):
+    def generate(self,x_pre , n,sw=True,threshold=0.5, std=1,get_z=False): # n = how many 8 bars
         """ Build operation (note: batch_size is assumed to be 1)
             :param num: specifies the number of samples to be generated
             :return: shape(num, 256)
@@ -72,7 +72,7 @@ class Model(object):
                     result.append(melodies[0, :, :, :])
                     result.append(melodies[1, :, :, :])
                 else:
-                    result.append(melodies[1, :, :, :])
+                    result.append(melodies[1, :, :, :]) # stack the 2nd 384
                 z1 = z2
             else:
                 melodies = melodies.reshape(self.num_timestep, self.num_pitch, 2)

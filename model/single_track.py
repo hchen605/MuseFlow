@@ -359,8 +359,8 @@ def sample(n=10, std=1, epoch_n='0'):
 
         for j in range(num_bar):
             bar_id = j + i * num_bar
-            z_sample = np.array(np.random.randn(1, num_timestep, num_pitch, 1)) 
-            z_samples = np.insert(z_sample, 0, values=x_test[bar_id, :,:, 0], axis=-1)
+            z_sample = np.array(np.random.randn(1, num_timestep, num_pitch, 1)) # normal noise
+            z_samples = np.insert(z_sample, 0, values=x_test[bar_id, :,:, 0], axis=-1) # piano track
             # z_samples = z_samples.reshape(1, num_timestep * num_pitch, 2)
             x_decoded = decoder.predict(z_samples)
             digit = x_decoded[0]
