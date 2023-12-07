@@ -11,6 +11,9 @@ import pretty_midi
 import pypianoroll
 import errno
 import pandas as pd
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
 CONFIG = {
     'multicore': 40,  # the number of cores to use (1 to disable multiprocessing)
     'beat_resolution': 24,  # temporal resolution (in time step per beat)
@@ -196,7 +199,7 @@ if __name__ == "__main__":
         pm = pretty_midi.PrettyMIDI(str(file))
         midi_info = get_midi_info(pm)
         if not midi_filter(midi_info):
-            #print('not 4/4 ,skip')
+            print('not 4/4 ,skip')
             continue
 
         multitrack = pypianoroll.parse(str(file))
@@ -205,7 +208,7 @@ if __name__ == "__main__":
         main_melody = np.where(check_which_family(multitrack.tracks[0]))[0]
         # 0-drum, 1-piano, 2-guitar, 3-bass, 4-string
         if not len(main_melody) or main_melody[0]!=1:
-            #print('main melody not paino ,skip')
+            print('main melody not paino ,skip')
             continue
 
         #3-Whether the theme (piano) is monophonic
@@ -219,11 +222,17 @@ if __name__ == "__main__":
         filter_list += 1
         os.system("cp -rf " + sourcePath + " " + targetPath)
         '''
-        parent = str(file.parent).replace('lmd_style', 'lmd_filter')
-        if not os.path.exists(parent):
-            os.makedirs(parent)
+        #print(str(file.parent))
+        # parent = str(file.parent).replace('lmd_style', 'lmd_filter')
+        # if not os.path.exists(parent):
+        #     os.makedirs(parent)
 
-        targetPath = str(file).replace('lmd_style', 'lmd_filter')
-        os.system("cp -rf " + str(file) + " " + targetPath)
+        # targetPath = str(file).replace('lmd_style', 'lmd_filter')
+        # os.system("cp -rf " + str(file) + " " + targetPath)
+
+        if not os.path.exists(outfile):
+            os.makedirs(outfile)
+
+        os.system("cp -rf " + str(file) + " " + outfile)
 
 

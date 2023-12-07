@@ -208,7 +208,7 @@ def midi_filter(midi_info):
 
 if __name__ == "__main__":
 
-    num_consecutive_bar = 4*2
+    num_consecutive_bar = 4*2*4
     resol = 24
     down_sample = 1
     cnt_total_segments = 0
@@ -218,9 +218,10 @@ if __name__ == "__main__":
     print("8beat,have_sw,q=1,single")
     ags=parse()
     dir = ags.dir
+    print(ags)
     if not os.path.isdir(dir):
         raise argparse.ArgumentTypeError("dir must be a directory")
-    outfile = ags.outfile
+    outfile = ags.out
     if not outfile.endswith(".npy") and not outfile.endswith(".npz"):
         outfile += ".npy"
     try:
@@ -335,7 +336,7 @@ if __name__ == "__main__":
 
         for tracks in multi_track.tracks:
             pianorolls.append(tracks.pianoroll[:, :, np.newaxis])
-        print(lidx)
+        #print(lidx)
         #pianoroll_compiled = np.reshape(np.concatenate(pianorolls, axis=2)[:, 28:88, :], (num_consecutive_bar, resol, 60, 5))
         pianoroll_compiled = np.concatenate(pianorolls, axis=2)[:, 28:88, :]
         pianoroll_compiled = pianoroll_compiled[np.newaxis, :]
