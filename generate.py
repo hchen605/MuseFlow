@@ -12,12 +12,14 @@ import model.flow_layer as flow
 from data.config import CONFIG
 num_timestep = 768
 num_pitch = 60
+num_bars = 28
+num_seg = int(num_bars / 4)
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string(
-    'file_path', './music_data/country_8.midi',
+    'file_path', './music_data/thinkof.midi',
     'Main melody file path ')
 
 flags.DEFINE_string(
@@ -45,16 +47,16 @@ def combine(piano,sw=True,filt=False):
 
     if filt:
         strings_output = strings.medfilt(strings_output, 17)
-        guitar_output = guitar.medfilt(guitar_output, 17)
-        bass_output = bass.medfilt(bass_output, 27)
+        guitar_output = guitar.medfilt(guitar_output, 11)
+        bass_output = bass.medfilt(bass_output, 17)
         strings_output = strings.medfilt(strings_output, 17)
-        guitar_output = guitar.medfilt(guitar_output, 17)
-        bass_output = bass.medfilt(bass_output, 27)
+        guitar_output = guitar.medfilt(guitar_output, 11)
+        bass_output = bass.medfilt(bass_output, 17)
     compiled_list=[drums_output[...,-1:], guitar_output, bass_output[...,-1:], strings_output[...,-1:]]
     #print('compiled_list: ', np.array(compiled_list).shape)
     result = np.concatenate(compiled_list, axis=-1)
     print('result: ', np.array(result).shape) #result:  (2, 384, 60, 5)
-    result = result.reshape(-1, 2, num_timestep // 2, num_pitch, 5)
+    result = result.reshape(-1, num_seg, num_timestep // 2, num_pitch, 5)
     #result = result.reshape(-1, 3, 384, num_pitch, 5)
     print('result: ', np.array(result).shape) #result:  (1, 2, 384, 60, 5)
 
@@ -64,7 +66,7 @@ def main(unused_argv):
     x_pre = flow.SlidingWindow(file, 24, num_timestep, num_pitch, num_consecutive_bar=8*4)
     result = combine(x_pre,filt=True)
     np.save(FLAGS.save_dir+'result.npy', result)
-    flow.save_samples(CONFIG['model'], 'country_result',result,path=FLAGS.save_dir, save_midi=True,shape=(1,result.shape[0]))
+    flow.save_samples(CONFIG['model'], 'thinkof_result',result,path=FLAGS.save_dir, save_midi=True,shape=(1,result.shape[0]))
 
 
 if __name__ == '__main__':
